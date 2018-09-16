@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { createStackNavigator, type NavigationState } from 'react-navigation';
 import React, { Component } from 'react';
 
@@ -10,8 +10,11 @@ class WelcomeScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
+        <Text style={styles.welcome}>Welcome to To Do Later!</Text>
+        <Button
+          title="Let's get you organised"
+          onPress={ () => this.start() }
+        />
       </View>
     );
   }

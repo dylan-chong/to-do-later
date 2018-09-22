@@ -1,12 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Container, Button, Text } from 'native-base';
 import { createStackNavigator, type NavigationState } from 'react-navigation';
 import React, { Component } from 'react';
 
 type Props = { navigation: NavigationState };
 
+// TODO move into a new file
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-WRCaI8AgCHfIE5WDmkpP3-uYW6zPUg',
   authDomain: 'to-do-later.firebaseapp.com',
@@ -22,13 +24,14 @@ class WelcomeScreen extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         <Text style={styles.welcome}>Welcome to To Do Later!</Text>
-        <Button
-          title="Let's get you organised"
-          onPress={ () => this.start() }
-        />
-      </View>
+        <Button onPress={ () => this.start() }>
+          <Text>
+            { "Let's get you organised!" }
+          </Text>
+        </Button>
+      </Container>
     );
   }
 }
@@ -44,11 +47,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 

@@ -12,6 +12,8 @@ import { type NavigationState } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 
+import { userData } from '../services/UserService';
+
 type Props = { navigation: NavigationState };
 
 export class CreateTaskScreen extends Component<Props> {
@@ -22,6 +24,16 @@ export class CreateTaskScreen extends Component<Props> {
   };
 
   create() {
+    if (!this.state.title) {
+      alert('Not a valid title');
+    }
+
+    userData.update(user => {
+      user.tasks.push(this.state);
+    });
+
+    const { goBack } = this.props.navigation;
+    goBack()
   }
 
   render() {
@@ -32,7 +44,7 @@ export class CreateTaskScreen extends Component<Props> {
             <Item>
               <Label>Title</Label>
               <Input placeholder="History Essay" onChangeText={
-                (title) => this.setState({ title })
+                (value) => this.setState({ title: value.trim() })
               } />
             </Item>
             <Item style={ styles.container }>

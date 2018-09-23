@@ -1,8 +1,28 @@
 import firebase from 'firebase';
 import md5 from 'md5';
+import { assign } from 'lodash';
 
 export const userData = {
-  currentUser: null,
+  _currentUser: null,
+  _currentUserRef: null,
+
+  currentUser: function () {
+    if (!this._currentUser) {
+      throw new Error();
+    }
+
+    return this._currentUser;
+  },
+
+  update: function (updater) {
+    updater(this.currentUser());
+    return this._currentUserRef.set(this._currentUser);
+  },
+
+  _setUser: function (user, ref) {
+    this._currentUser = assign(newBlankUser(), user);
+    this._currentUserRef = ref;
+  }
 };
 
 export const signup = async (username, password) => {
@@ -19,8 +39,9 @@ export const signup = async (username, password) => {
     }
   }
 
-  userData.currentUser = userRef;
-  return userRef.set({ passwordHash });
+  const newUser = { passwordHash };
+  userData._setUser(newUser, userRef);
+  return userRef.set(newUser);
 };
 
 export const login = async (username, password) => {
@@ -35,7 +56,7 @@ export const login = async (username, password) => {
     throw new Error('Incorrect password');
   }
 
-  userData.currentUser = userRef;
+  userData._setUser(user, userRef);
 };
 
 export const getUserRef = (username) => {
@@ -54,4 +75,10 @@ const hashPassword = (passwordString) => {
   }
 
   return md5(passwordString);
+}
+
+const newBlankUser = () => {
+  return {
+    tasks: [],
+  }
 }

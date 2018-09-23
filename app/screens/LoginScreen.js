@@ -37,7 +37,8 @@ export class LoginScreen extends Component<Props> {
     this.setState({ loading: true });
     fn(this.state.username, this.state.password)
       .then(() => {
-        debugger
+        const { navigate } = this.props.navigation;
+        navigate('Tasks');
       })
       .catch(e => {
         alert(e);

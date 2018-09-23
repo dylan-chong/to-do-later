@@ -20,7 +20,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 class WelcomeScreen extends Component<Props> {
-  static navigationOptions = { title: 'Home' };
+  static navigationOptions = { title: 'Welcome' };
+
+  start() {
+    const { navigate } = this.props.navigation;
+    navigate('Login');
+    // TODO NEXT login page **************************************************
+    // TODO after refactor into multiple files
+  }
 
   render() {
     return (

@@ -56,13 +56,13 @@ export class LoginScreen extends Component<Props> {
             <Item>
               <Label>Username</Label>
               <Input placeholder="Username" onChangeText={
-                (text) => this.setState(state => ({ ...state, username: text }))
+                (username) => this.setState({ username })
               } />
             </Item>
             <Item>
               <Label>Password</Label>
               <Input placeholder="Password" onChangeText={
-                (text) => this.setState(state => ({ ...state, password: text }))
+                (password) => this.setState({ password })
               } />
             </Item>
             <Item style={ styles.container }>

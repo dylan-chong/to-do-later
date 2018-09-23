@@ -29,7 +29,7 @@ export const signup = async (username, password) => {
   const user = (await userRef.once('value')).val();
   if (user) {
     try {
-      return login(username, password);
+      return await login(username, password);
     } catch (e) {
       throw new Error('User already exists');
     }

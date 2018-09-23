@@ -12,6 +12,8 @@ import { type NavigationState } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 
+import { signup } from '../FirebaseService';
+
 type Props = { navigation: NavigationState };
 
 export class LoginScreen extends Component<Props> {
@@ -23,12 +25,18 @@ export class LoginScreen extends Component<Props> {
   };
 
   login() {
-    const { navigate } = this.props.navigation;
+    // const { navigate } = this.props.navigation;
     // navigate('Login');
   }
 
   signup() {
-
+    signup(this.state.username, this.state.password)
+      .then(() => {
+        debugger
+      })
+      .catch(e => {
+        alert(e);
+      });
   }
 
   render() {

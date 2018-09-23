@@ -11,8 +11,6 @@ export class WelcomeScreen extends Component<Props> {
   start() {
     const { navigate } = this.props.navigation;
     navigate('Login');
-    // TODO NEXT login page **************************************************
-    // TODO after refactor into multiple files
   }
 
   render() {

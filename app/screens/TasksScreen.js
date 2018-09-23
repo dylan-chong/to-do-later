@@ -25,6 +25,14 @@ export class TasksScreen extends Component<Props> {
     navigate('CreateTask', { onBack: () => this.setState({}) });
   }
 
+  editTask(entry) {
+    const { navigate } = this.props.navigation;
+    navigate('EditTask', {
+      task: entry.item,
+      index: entry.index,
+    })
+  }
+
   render() {
     // TODO fix floating action button stupidly not working working at the flat list
     return (
@@ -48,9 +56,9 @@ export class TasksScreen extends Component<Props> {
                         { entry.item.title }
                       </Text>
                     </Body>
-                    <Right>
+                    <Button transparent onPress={ () => this.editTask(entry) }>
                       <Icon active name="arrow-forward" />
-                    </Right>
+                    </Button>
                   </ListItem>
               }
             />

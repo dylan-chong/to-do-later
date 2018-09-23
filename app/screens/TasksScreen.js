@@ -1,5 +1,6 @@
 import {
   Body,
+  Button,
   Container,
   Fab,
   Icon,
@@ -21,35 +22,53 @@ export class TasksScreen extends Component<Props> {
 
   createTask() {
     const { navigate } = this.props.navigation;
-    navigate('CreateTask');
+    navigate('CreateTask', { onBack: () => this.setState({}) });
   }
 
   render() {
+    // TODO fix floating action button stupidly not working working at the flat list
     return (
       <Container>
-        <Fab 
-          direction="left" 
-          position="bottomRight" 
-          onPress={ () => this.createTask() }>
-          <Icon name="add" />
-        </Fab>
-        <FlatList
-          data={ userData.currentUser().tasks }
-          renderItem={ entry =>
-              <ListItem itemDivider>
-                <Left />
-                <Body>
-                  <Text>
-                    { entry.item.title }
-                  </Text>
-                </Body>
-                <Right>
-                  <Icon active name="arrow-forward" />
-                </Right>
-              </ListItem>
-          }
-        />
+        {
+          userData.currentUser().tasks.length === 0
+            ?
+            <Button onPress={ () => this.createTask() } style={{ margin: 10 }}>
+              <Text>
+                Create First Task
+              </Text>
+            </Button>
+            :
+            <FlatList
+              data={ userData.currentUser().tasks }
+              renderItem={ entry =>
+                  <ListItem itemDivider>
+                    <Left />
+                    <Body>
+                      <Text>
+                        { entry.item.title }
+                      </Text>
+                    </Body>
+                    <Right>
+                      <Icon active name="arrow-forward" />
+                    </Right>
+                  </ListItem>
+              }
+            />
+        }
       </Container>
     );
   }
+
+  // render() {
+    // return (
+      // <Container>
+        // <Fab
+          // direction="left"
+          // position="bottomRight"
+          // onPress={ () => this.createTask() }>
+          // <Icon name="add" />
+        // </Fab>
+      // </Container>
+    // );
+  // }
 }

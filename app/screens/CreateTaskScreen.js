@@ -23,9 +23,15 @@ export class CreateTaskScreen extends Component<Props> {
     title: '',
   };
 
+  componentWillUnmount() {
+    const { getParam } = this.props.navigation;
+    getParam('onBack', () => {})();
+  }
+
   create() {
     if (!this.state.title) {
       alert('Not a valid title');
+      return;
     }
 
     userData.update(user => {

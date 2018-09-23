@@ -26,7 +26,7 @@ class WelcomeScreen extends Component<Props> {
     return (
       <Container style={styles.container}>
         <Text style={styles.welcome}>Welcome to To Do Later!</Text>
-        <Button onPress={ () => this.start() }>
+        <Button style={styles.welcome} onPress={ () => this.start() }>
           <Text>
             { "Let's get you organised!" }
           </Text>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    alignSelf: 'center',
   },
 });
 

@@ -31,7 +31,7 @@ export class CreateTaskScreen extends Component<Props> {
           <Form>
             <Item>
               <Label>Title</Label>
-              <Input placeholder="Title" onChangeText={
+              <Input placeholder="History Essay" onChangeText={
                 (title) => this.setState({ title })
               } />
             </Item>

@@ -13,7 +13,7 @@ import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import { login, signup } from '../FirebaseService';
+import { login, signup } from '../services/UserService';
 
 type Props = { navigation: NavigationState };
 

@@ -1,25 +1,9 @@
-import 'firebase/database';
-
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import md5 from 'md5';
 
-export const firebaseData = {
+export const userData = {
   currentUser: null,
 };
-
-export const initialiseFirebase = () => {
-  const firebaseConfig = {
-    apiKey: 'AIzaSyBO-WRCaI8AgCHfIE5WDmkpP3-uYW6zPUg',
-    authDomain: 'to-do-later.firebaseapp.com',
-    databaseURL: 'https://to-do-later.firebaseio.com',
-    projectId: 'to-do-later',
-    storageBucket: 'to-do-later.appspot.com',
-    messagingSenderId: '844883333608'
-  };
-  firebase.initializeApp(firebaseConfig);
-}
-
-export const firebaseService = firebase;
 
 export const signup = async (username, password) => {
   username = username.trim();
@@ -35,7 +19,7 @@ export const signup = async (username, password) => {
     }
   }
 
-  firebaseData.currentUser = userRef;
+  userData.currentUser = userRef;
   return userRef.set({ passwordHash });
 };
 
@@ -51,7 +35,7 @@ export const login = async (username, password) => {
     throw new Error('Incorrect password');
   }
 
-  firebaseData.currentUser = userRef;
+  userData.currentUser = userRef;
 };
 
 export const getUserRef = (username) => {

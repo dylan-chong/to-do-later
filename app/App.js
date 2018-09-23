@@ -4,7 +4,7 @@ import { CreateTaskScreen } from './screens/CreateTaskScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { TasksScreen } from './screens/TasksScreen';
 import { WelcomeScreen } from './screens/WelcomeScreen';
-import { initialiseFirebase } from './FirebaseService';
+import { initialiseFirebase } from './services/FirebaseService';
 
 initialiseFirebase();
 

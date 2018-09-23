@@ -12,7 +12,7 @@ import { type NavigationState } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 
-import { signup } from '../FirebaseService';
+import { login, signup } from '../FirebaseService';
 
 type Props = { navigation: NavigationState };
 
@@ -25,8 +25,13 @@ export class LoginScreen extends Component<Props> {
   };
 
   login() {
-    // const { navigate } = this.props.navigation;
-    // navigate('Login');
+    login(this.state.username, this.state.password)
+      .then(() => {
+        debugger
+      })
+      .catch(e => {
+        alert(e);
+      });
   }
 
   signup() {
@@ -45,7 +50,7 @@ export class LoginScreen extends Component<Props> {
         <Content>
           <Form>
             <Item>
-              <Label>Email</Label>
+              <Label>Username</Label>
               <Input placeholder="Username" onChangeText={
                 (text) => this.setState(state => ({ ...state, username: text }))
               } />
@@ -80,5 +85,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+    margin: 10,
   }
 });

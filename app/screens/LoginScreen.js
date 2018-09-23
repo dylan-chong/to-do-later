@@ -11,6 +11,7 @@ import {
 import { type NavigationState } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { login, signup } from '../FirebaseService';
 
@@ -25,28 +26,31 @@ export class LoginScreen extends Component<Props> {
   };
 
   login() {
-    login(this.state.username, this.state.password)
-      .then(() => {
-        debugger
-      })
-      .catch(e => {
-        alert(e);
-      });
+    this.authenticate(login)
   }
 
   signup() {
-    signup(this.state.username, this.state.password)
+    this.authenticate(signup)
+  }
+
+  authenticate(fn) {
+    this.setState({ loading: true });
+    fn(this.state.username, this.state.password)
       .then(() => {
         debugger
       })
       .catch(e => {
         alert(e);
-      });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      })
   }
 
   render() {
     return (
       <Container>
+        <Spinner visible={this.state.loading} />
         <Content>
           <Form>
             <Item>

@@ -1,25 +1,11 @@
-import firebase from 'firebase/app';
-import 'firebase/database';
-
-import { StyleSheet } from 'react-native';
 import { Container, Button, Text } from 'native-base';
-import { createStackNavigator, type NavigationState } from 'react-navigation';
+import { type NavigationState } from 'react-navigation';
+import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 
 type Props = { navigation: NavigationState };
 
-// TODO move into a new file
-const firebaseConfig = {
-  apiKey: 'AIzaSyBO-WRCaI8AgCHfIE5WDmkpP3-uYW6zPUg',
-  authDomain: 'to-do-later.firebaseapp.com',
-  databaseURL: 'https://to-do-later.firebaseio.com',
-  projectId: 'to-do-later',
-  storageBucket: 'to-do-later.appspot.com',
-  messagingSenderId: '844883333608'
-};
-firebase.initializeApp(firebaseConfig);
-
-class WelcomeScreen extends Component<Props> {
+export class WelcomeScreen extends Component<Props> {
   static navigationOptions = { title: 'Welcome' };
 
   start() {
@@ -57,10 +43,3 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
-export default createStackNavigator(
-  {
-    Welcome: WelcomeScreen,
-  },
-  { initialRouteName: 'Welcome' },
-);

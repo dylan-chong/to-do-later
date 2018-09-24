@@ -10,6 +10,7 @@ import {
 import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
 import React, { Component } from 'react';
+import { omit } from 'lodash';
 
 import { userData } from '../services/UserService';
 
@@ -18,15 +19,20 @@ type Props = { navigation: NavigationState };
 export class TasksScreen extends Component<Props> {
   static navigationOptions = { title: 'Tasks' };
 
+  willFocus = this.props.navigation.addListener(
+    'willFocus',
+    () => this.forceUpdate(),
+  )
+
   createTask() {
     const { navigate } = this.props.navigation;
-    navigate('CreateTask', { onBack: () => this.setState({}) });
+    navigate('CreateTask')
   }
 
   editTask(entry) {
     const { navigate } = this.props.navigation;
     navigate('EditTask', {
-      task: entry.item,
+      task: omit(entry.item, 'onPress'),
       index: entry.index - 1,
     })
   }
@@ -48,7 +54,8 @@ export class TasksScreen extends Component<Props> {
     return (
       <Container>
         <FlatList
-          data={ () => this.listItems() }
+          data={ this.listItems() }
+          keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
               <ListItem itemDivider>
                 <Left />
@@ -57,7 +64,7 @@ export class TasksScreen extends Component<Props> {
                     { entry.item.title }
                   </Text>
                 </Body>
-                <Button transparent onPress={ entry.item.onPress }>
+                <Button transparent onPress={ () => entry.item.onPress(entry) }>
                   <Icon active name="arrow-forward" />
                 </Button>
               </ListItem>

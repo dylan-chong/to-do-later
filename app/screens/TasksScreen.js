@@ -1,16 +1,8 @@
-import {
-  Body,
-  Button,
-  Container,
-  Icon,
-  Left,
-  ListItem,
-  Text
-} from 'native-base';
+import { Body, Button, Container, Icon, ListItem, Text } from 'native-base';
 import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
-import React, { Component } from 'react';
 import { omit } from 'lodash';
+import React, { Component } from 'react';
 
 import { userData } from '../services/UserService';
 
@@ -39,7 +31,7 @@ export class TasksScreen extends Component<Props> {
 
   listItems() {
     const items = [
-      { title: '...New Task...', onPress: () => this.createTask() }
+      { title: 'New Task...', onPress: () => this.createTask() }
     ]
 
     const tasks = userData.currentUser().tasks.map(task => ({
@@ -58,7 +50,6 @@ export class TasksScreen extends Component<Props> {
           keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
               <ListItem itemDivider>
-                <Left />
                 <Body>
                   <Text>
                     { entry.item.title }

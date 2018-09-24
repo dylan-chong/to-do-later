@@ -29,54 +29,36 @@ export class TasksScreen extends Component<Props> {
     const { navigate } = this.props.navigation;
     navigate('EditTask', {
       task: entry.item,
-      index: entry.index,
+      index: entry.index - 1,
     })
   }
 
   render() {
-    // TODO fix floating action button stupidly not working working at the flat list
     return (
       <Container>
-        {
-          userData.currentUser().tasks.length === 0
-            ?
-            <Button onPress={ () => this.createTask() } style={{ margin: 10 }}>
-              <Text>
-                Create First Task
-              </Text>
-            </Button>
-            :
-            <FlatList
-              data={ userData.currentUser().tasks }
-              renderItem={ entry =>
-                  <ListItem itemDivider>
-                    <Left />
-                    <Body>
-                      <Text>
-                        { entry.item.title }
-                      </Text>
-                    </Body>
-                    <Button transparent onPress={ () => this.editTask(entry) }>
-                      <Icon active name="arrow-forward" />
-                    </Button>
-                  </ListItem>
-              }
-            />
-        }
+        <FlatList
+          data={ [
+            { title: '...New Task...', onPress: () => this.createTask() },
+            ...userData.currentUser().tasks.map(task => ({
+              ...task,
+              onPress: (entry) => this.editTask(entry),
+            })),
+          ] }
+          renderItem={ entry =>
+              <ListItem itemDivider>
+                <Left />
+                <Body>
+                  <Text>
+                    { entry.item.title }
+                  </Text>
+                </Body>
+                <Button transparent onPress={ entry.item.onPress }>
+                  <Icon active name="arrow-forward" />
+                </Button>
+              </ListItem>
+          }
+        />
       </Container>
     );
   }
-
-  // render() {
-    // return (
-      // <Container>
-        // <Fab
-          // direction="left"
-          // position="bottomRight"
-          // onPress={ () => this.createTask() }>
-          // <Icon name="add" />
-        // </Fab>
-      // </Container>
-    // );
-  // }
 }

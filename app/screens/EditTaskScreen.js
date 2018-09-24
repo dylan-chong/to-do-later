@@ -16,6 +16,8 @@ import { userData } from '../services/UserService';
 
 type Props = { navigation: NavigationState };
 
+// TODO NEXT remove duplication between the screen and the other screen
+
 export class EditTaskScreen extends Component<Props> {
   static navigationOptions = { title: 'EditTask' };
 

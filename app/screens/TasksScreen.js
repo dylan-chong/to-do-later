@@ -2,11 +2,9 @@ import {
   Body,
   Button,
   Container,
-  Fab,
   Icon,
   Left,
   ListItem,
-  Right,
   Text
 } from 'native-base';
 import { FlatList } from 'react-native';
@@ -33,17 +31,24 @@ export class TasksScreen extends Component<Props> {
     })
   }
 
+  listItems() {
+    const items = [
+      { title: '...New Task...', onPress: () => this.createTask() }
+    ]
+
+    const tasks = userData.currentUser().tasks.map(task => ({
+      ...task,
+      onPress: (entry) => this.editTask(entry),
+    }))
+
+    return [ ...items, ...tasks ]
+  }
+
   render() {
     return (
       <Container>
         <FlatList
-          data={ [
-            { title: '...New Task...', onPress: () => this.createTask() },
-            ...userData.currentUser().tasks.map(task => ({
-              ...task,
-              onPress: (entry) => this.editTask(entry),
-            })),
-          ] }
+          data={ () => this.listItems() }
           renderItem={ entry =>
               <ListItem itemDivider>
                 <Left />

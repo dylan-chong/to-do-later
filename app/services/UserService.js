@@ -32,11 +32,7 @@ export const signup = async (username, password) => {
 
   const user = (await userRef.once('value')).val();
   if (user) {
-    try {
-      return await login(username, password);
-    } catch (e) {
-      throw new Error('User already exists');
-    }
+    throw new Error('User already exists');
   }
 
   const newUser = { passwordHash };
@@ -48,11 +44,12 @@ export const login = async (username, password) => {
   const userRef = getUserRef(username);
   const user = (await userRef.once('value')).val();
   const passwordHash = hashPassword(password);
+
   if (!user) {
-    return signup(username, password);
+    throw new Error('You have not signed up yet');
   }
 
-  if (user.passwordHash != passwordHash) {
+  if (user.passwordHash !== passwordHash) {
     throw new Error('Incorrect password');
   }
 

@@ -52,7 +52,7 @@ export class EditTaskScreen extends Component<Props> {
             <Item>
               <Label>Title</Label>
               <Input placeholder="History Essay" value={ this.state.title } onChangeText={
-                (value) => this.setState({ title: value.trim() })
+                (value) => this.setState({ title: value })
               } />
             </Item>
             <Item style={ styles.container }>

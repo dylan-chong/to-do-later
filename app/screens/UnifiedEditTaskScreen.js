@@ -50,7 +50,7 @@ export class UnifiedEditTaskScreen extends Component<Props> {
       'Are you sure you want to delete this task?',
       [
         { text: 'Cancel' },
-        { text: 'OK', onPress: deleteAndGoBack },
+        { text: 'Delete', onPress: deleteAndGoBack },
       ],
     )
   }

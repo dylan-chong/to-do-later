@@ -1,4 +1,14 @@
-import { Body, Button, Container, Icon, ListItem, Text } from 'native-base';
+import {
+  Body,
+  Button,
+  CheckBox,
+  Container,
+  Icon,
+  Left,
+  ListItem,
+  Right,
+  Text
+} from 'native-base';
 import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
 import { omit } from 'lodash';
@@ -50,15 +60,30 @@ export class TasksScreen extends Component<Props> {
 
   listItems() {
     const items = [
-      { title: 'New Task...', onPress: () => this.createTask() }
+      {
+        title: 'New Task...',
+        onPress: () => this.createTask(),
+      }
     ]
 
     const tasks = userTasks.all().map(task => ({
       ...task,
       onPress: (entry) => this.editTask(entry),
+      onCompletionChange: (entry) => this.toggleChecked(entry),
     }))
 
     return [ ...items, ...tasks ]
+  }
+
+  toggleChecked({ index }) {
+    const taskIndex = index - 1
+
+    userTasks.update(tasks => {
+      const task = tasks[taskIndex]
+      task.isCompleted = !task.isCompleted;
+    })
+
+    this.setState({})
   }
 
   render() {
@@ -69,14 +94,26 @@ export class TasksScreen extends Component<Props> {
           keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
               <ListItem itemDivider>
+                <Left>
+                  {
+                    entry.item.onCompletionChange
+                    &&
+                    <CheckBox
+                      checked={ entry.item.isCompleted }
+                      onPress={ () => entry.item.onCompletionChange(entry) }
+                    />
+                  }
+                </Left>
                 <Body>
                   <Text>
                     { entry.item.title }
                   </Text>
                 </Body>
-                <Button transparent onPress={ () => entry.item.onPress(entry) }>
-                  <Icon active name="arrow-forward" />
-                </Button>
+                <Right>
+                  <Button transparent onPress={ () => entry.item.onPress(entry) }>
+                    <Icon active name="arrow-forward" />
+                  </Button>
+                </Right>
               </ListItem>
           }
         />

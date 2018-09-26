@@ -1,6 +1,8 @@
+import { assign, cloneDeep } from 'lodash';
 import firebase from 'firebase';
 import md5 from 'md5';
-import { assign } from 'lodash';
+
+import { preprocessTasks } from './TaskService';
 
 export const userData = {
   _currentUser: null,
@@ -14,13 +16,18 @@ export const userData = {
     return this._currentUser;
   },
 
-  update: function (updater) {
+  update: function (updater = () => {}) {
     updater(this.currentUser());
     return this._currentUserRef.set(this._currentUser);
   },
 
   _setUser: function (user, ref) {
-    this._currentUser = assign(newBlankUser(), user);
+    user = cloneDeep(user)
+
+    user = assign(newBlankUser(), user)
+    user.tasks = preprocessTasks(user.tasks)
+
+    this._currentUser = user
     this._currentUserRef = ref;
   }
 };
@@ -32,7 +39,7 @@ export const signup = async (username, password) => {
 
   const user = (await userRef.once('value')).val();
   if (user) {
-    throw new Error('User already exists');
+    throw new Error('It looks like you have already signed up');
   }
 
   const newUser = { passwordHash };

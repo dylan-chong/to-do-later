@@ -3,11 +3,11 @@ import { assign } from 'lodash';
 import { userData } from './UserService';
 
 export const userTasks = {
-  all: function () {
+  all() {
     return userData.currentUser().tasks
   },
 
-  update: function (updater = () => {}) {
+  update(updater = () => {}) {
     userData.update(() => updater(this.all()))
   },
 }

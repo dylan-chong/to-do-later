@@ -8,7 +8,7 @@ export const userData = {
   _currentUser: null,
   _currentUserRef: null,
 
-  currentUser: function () {
+  currentUser() {
     if (!this._currentUser) {
       throw new Error();
     }
@@ -16,12 +16,12 @@ export const userData = {
     return this._currentUser;
   },
 
-  update: function (updater = () => {}) {
+  update(updater = () => {}) {
     updater(this.currentUser());
     return this._currentUserRef.set(this._currentUser);
   },
 
-  _setUser: function (user, ref) {
+  _setUser(user, ref) {
     user = cloneDeep(user)
 
     user = assign(newBlankUser(), user)

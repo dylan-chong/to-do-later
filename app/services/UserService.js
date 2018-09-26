@@ -79,3 +79,7 @@ const newBlankUser = () => {
     tasks: [],
   }
 }
+
+export const newBlankTask = () => ({
+  title: '',
+})

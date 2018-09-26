@@ -4,7 +4,7 @@ import { type NavigationState } from 'react-navigation';
 import { omit } from 'lodash';
 import React, { Component } from 'react';
 
-import { userData } from '../services/UserService';
+import { newBlankTask, userData } from '../services/UserService';
 
 type Props = { navigation: NavigationState };
 
@@ -18,14 +18,27 @@ export class TasksScreen extends Component<Props> {
 
   createTask() {
     const { navigate } = this.props.navigation;
-    navigate('CreateTask')
+
+    const saveFunction = (task) => {
+      userData.update(user => user.tasks.push(task));
+    };
+
+    navigate('UnifiedEditTask', {
+      task: newBlankTask(),
+      saveFunction,
+    })
   }
 
   editTask(entry) {
     const { navigate } = this.props.navigation;
-    navigate('EditTask', {
+
+    const saveFunction = (task) => {
+      userData.update(user => user.tasks[entry.index - 1] = task);
+    };
+
+    navigate('UnifiedEditTask', {
       task: omit(entry.item, 'onPress'),
-      index: entry.index - 1,
+      saveFunction,
     })
   }
 

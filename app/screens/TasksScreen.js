@@ -4,7 +4,7 @@ import { type NavigationState } from 'react-navigation';
 import { omit } from 'lodash';
 import React, { Component } from 'react';
 
-import { newBlankTask, userData } from '../services/UserService';
+import { newBlankTask, userTasks } from '../services/TaskService';
 
 type Props = { navigation: NavigationState };
 
@@ -20,7 +20,7 @@ export class TasksScreen extends Component<Props> {
     const { navigate } = this.props.navigation;
 
     const saveFunction = (task) => {
-      userData.update(user => user.tasks.push(task));
+      userTasks.update(tasks => tasks.push(task));
     };
 
     navigate('UnifiedEditTask', {
@@ -33,7 +33,7 @@ export class TasksScreen extends Component<Props> {
     const { navigate } = this.props.navigation;
 
     const saveFunction = (task) => {
-      userData.update(user => user.tasks[entry.index - 1] = task);
+      userTasks.update(tasks => tasks[entry.index - 1] = task);
     };
 
     navigate('UnifiedEditTask', {
@@ -47,7 +47,7 @@ export class TasksScreen extends Component<Props> {
       { title: 'New Task...', onPress: () => this.createTask() }
     ]
 
-    const tasks = userData.currentUser().tasks.map(task => ({
+    const tasks = userTasks.all().map(task => ({
       ...task,
       onPress: (entry) => this.editTask(entry),
     }))

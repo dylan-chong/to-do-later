@@ -1,3 +1,4 @@
+import { Alert, StyleSheet } from 'react-native';
 import {
   Button,
   Container,
@@ -9,7 +10,6 @@ import {
   Text
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
-import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 
 type Props = { navigation: NavigationState };
@@ -40,9 +40,19 @@ export class UnifiedEditTaskScreen extends Component<Props> {
   delete() {
     const { goBack, getParam } = this.props.navigation;
 
-    getParam('deleteFunction')()
+    const deleteAndGoBack = () => {
+      getParam('deleteFunction')()
+      goBack()
+    }
 
-    goBack()
+    Alert.alert(
+      'Delete Task',
+      'Are you sure you want to delete this task?',
+      [
+        { text: 'Cancel' },
+        { text: 'OK', onPress: deleteAndGoBack },
+      ],
+    )
   }
 
   render() {

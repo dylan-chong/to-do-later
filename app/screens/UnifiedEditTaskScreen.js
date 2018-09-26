@@ -37,7 +37,16 @@ export class UnifiedEditTaskScreen extends Component<Props> {
     goBack()
   }
 
+  delete() {
+    const { goBack, getParam } = this.props.navigation;
+
+    getParam('deleteFunction')()
+
+    goBack()
+  }
+
   render() {
+    const { getParam } = this.props.navigation;
     return (
       <Container>
         <Content>
@@ -49,6 +58,13 @@ export class UnifiedEditTaskScreen extends Component<Props> {
               } />
             </Item>
             <Item style={ styles.container }>
+              {
+                getParam('deleteFunction')
+                &&
+                <Button onPress={ () => this.delete() } style={ styles.buttonContainer } danger>
+                  <Text>Delete</Text>
+                </Button>
+              }
               <Button onPress={ () => this.save() } style={ styles.buttonContainer }>
                 <Text>Done</Text>
               </Button>

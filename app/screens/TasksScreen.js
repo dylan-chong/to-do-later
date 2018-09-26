@@ -31,14 +31,20 @@ export class TasksScreen extends Component<Props> {
 
   editTask(entry) {
     const { navigate } = this.props.navigation;
+    const taskIndex = entry.index - 1;
 
     const saveFunction = (task) => {
-      userTasks.update(tasks => tasks[entry.index - 1] = task);
+      userTasks.update(tasks => tasks[taskIndex] = task);
     };
+
+    const deleteFunction = () => {
+      userTasks.update(tasks => tasks.splice(taskIndex, 1))
+    }
 
     navigate('UnifiedEditTask', {
       task: omit(entry.item, 'onPress'),
       saveFunction,
+      deleteFunction,
     })
   }
 

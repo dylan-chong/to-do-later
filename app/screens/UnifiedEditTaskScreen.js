@@ -7,7 +7,6 @@ import {
   Input,
   Item,
   Label,
-  Right,
   Text
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
@@ -95,6 +94,7 @@ export class UnifiedEditTaskScreen extends Component<Props> {
         </Content>
         <DateTimePicker
           date={ this.state.dueDate ? new Date(this.state.dueDate) : new Date() }
+          mode="datetime"
           isVisible={ this.state.isSelectingDate }
           onConfirm={ (date) => this.onDateSelected(date) }
           onCancel={ () => this.setState({ isSelectingDate: false }) }

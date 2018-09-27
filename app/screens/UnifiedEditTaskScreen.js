@@ -85,6 +85,13 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                     : 'None'
                 }</Text>
               </Button>
+              {
+                dueDate
+                &&
+                <Button transparent onPress={ () => this.setState({ dueDate: null }) }>
+                  <Text uppercase={false}>Remove due date</Text>
+                </Button>
+              }
             </Item>
             <Item style={ styles.container }>
               {

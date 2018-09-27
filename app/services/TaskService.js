@@ -15,6 +15,7 @@ export const userTasks = {
 export const newBlankTask = () => ({
   title: '',
   isCompleted: false,
+  // TODO NEXT implement doing due dates
 })
 
 export const preprocessTasks = (tasks) => {

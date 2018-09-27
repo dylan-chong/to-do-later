@@ -7,9 +7,11 @@ import {
   Input,
   Item,
   Label,
+  Right,
   Text
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import React, { Component } from 'react';
 
 type Props = { navigation: NavigationState };
@@ -55,17 +57,27 @@ export class UnifiedEditTaskScreen extends Component<Props> {
     )
   }
 
+  onDateSelected(date) {
+    this.setState({ dueDate: date.toISOString(), isSelectingDate: false })
+  }
+
   render() {
     const { getParam } = this.props.navigation;
     return (
       <Container>
         <Content>
           <Form>
-            <Item>
+            <Item stackedLabel>
               <Label>Title</Label>
               <Input placeholder="History Essay" value={ this.state.title } onChangeText={
                 (value) => this.setState({ title: value })
               } />
+            </Item>
+            <Item stackedLabel>
+              <Label>Due Date</Label>
+              <Button transparent onPress={ () => this.setState({ isSelectingDate: true }) }>
+                <Text>None</Text>
+              </Button>
             </Item>
             <Item style={ styles.container }>
               {
@@ -76,11 +88,17 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                 </Button>
               }
               <Button onPress={ () => this.save() } style={ styles.buttonContainer }>
-                <Text>Done</Text>
+                <Text>Save</Text>
               </Button>
             </Item>
           </Form>
         </Content>
+        <DateTimePicker
+          date={ this.state.dueDate ? new Date(this.state.dueDate) : new Date() }
+          isVisible={ this.state.isSelectingDate }
+          onConfirm={ (date) => this.onDateSelected(date) }
+          onCancel={ () => this.setState({ isSelectingDate: false }) }
+        />
       </Container>
     );
   }

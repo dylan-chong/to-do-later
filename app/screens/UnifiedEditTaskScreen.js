@@ -10,6 +10,7 @@ import {
   Text
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
+import { distanceInWordsToNow, format } from 'date-fns';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import React, { Component } from 'react';
 
@@ -62,6 +63,8 @@ export class UnifiedEditTaskScreen extends Component<Props> {
 
   render() {
     const { getParam } = this.props.navigation;
+    const { dueDate, isSelectingDate } = this.state;
+
     return (
       <Container>
         <Content>
@@ -75,7 +78,12 @@ export class UnifiedEditTaskScreen extends Component<Props> {
             <Item stackedLabel>
               <Label>Due Date</Label>
               <Button transparent onPress={ () => this.setState({ isSelectingDate: true }) }>
-                <Text>None</Text>
+                <Text uppercase={false}>{
+                  dueDate
+                    ? format(dueDate, 'ddd d MMM YYYY, hh:mm a')
+                      + ' (' + distanceInWordsToNow(dueDate, { addSuffix: true }) + ')'
+                    : 'None'
+                }</Text>
               </Button>
             </Item>
             <Item style={ styles.container }>
@@ -93,9 +101,9 @@ export class UnifiedEditTaskScreen extends Component<Props> {
           </Form>
         </Content>
         <DateTimePicker
-          date={ this.state.dueDate ? new Date(this.state.dueDate) : new Date() }
+          date={ dueDate ? new Date(dueDate) : new Date() }
           mode="datetime"
-          isVisible={ this.state.isSelectingDate }
+          isVisible={ isSelectingDate }
           onConfirm={ (date) => this.onDateSelected(date) }
           onCancel={ () => this.setState({ isSelectingDate: false }) }
         />

@@ -7,12 +7,18 @@ import {
   Input,
   Item,
   Label,
+  Separator,
   Text
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
 import { distanceInWordsToNow, format } from 'date-fns';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import React, { Component } from 'react';
+
+import {
+  dueDateFrom,
+  partialTaskDataFromNaturalText
+} from '../services/TaskService';
 
 type Props = { navigation: NavigationState };
 
@@ -58,7 +64,11 @@ export class UnifiedEditTaskScreen extends Component<Props> {
   }
 
   onDateSelected(date) {
-    this.setState({ dueDate: date.toISOString(), isSelectingDate: false })
+    this.setState({ dueDate: dueDateFrom(date), isSelectingDate: false })
+  }
+
+  onSmartEntryChanged(text) {
+    this.setState(partialTaskDataFromNaturalText(text))
   }
 
   render() {
@@ -69,12 +79,23 @@ export class UnifiedEditTaskScreen extends Component<Props> {
       <Container>
         <Content>
           <Form>
+
+            <Item stackedLabel>
+              <Label>Smart Entry</Label>
+              <Input placeholder="History Assignment due Tuesday 3pm" onChangeText={
+                (value) => this.onSmartEntryChanged(value)
+              } />
+            </Item>
+
+            <Separator/>
+
             <Item stackedLabel>
               <Label>Title</Label>
               <Input placeholder="History Essay" value={ this.state.title } onChangeText={
                 (value) => this.setState({ title: value })
               } />
             </Item>
+
             <Item stackedLabel>
               <Label>Due Date</Label>
               <Button transparent onPress={ () => this.setState({ isSelectingDate: true }) }>
@@ -93,6 +114,9 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                 </Button>
               }
             </Item>
+
+            <Separator/>
+
             <Item stackedLabel>
               <Label>Notes</Label>
               <TextInput 
@@ -103,6 +127,9 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                   (value) => this.setState({ description: value })
                 } />
             </Item>
+
+            <Separator/>
+
             <Item style={ styles.container }>
               {
                 getParam('deleteFunction')
@@ -115,6 +142,7 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                 <Text>Save</Text>
               </Button>
             </Item>
+
           </Form>
         </Content>
         <DateTimePicker

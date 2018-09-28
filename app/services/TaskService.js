@@ -1,5 +1,6 @@
+import { addHours, isPast } from 'date-fns';
 import { assign, sortBy } from 'lodash';
-import { isPast } from 'date-fns';
+import Sherlock from 'sherlockjs';
 
 import { userData } from './UserService';
 
@@ -37,3 +38,27 @@ export const isTaskOverdue = ({ dueDate, isCompleted }) => {
   }
   return isPast(dueDate) && !isCompleted
 }
+
+export const partialTaskDataFromNaturalText = (text) => {
+  const taskData = {}
+
+  const eventData = Sherlock.parse(text)
+  console.log(eventData)
+  if (eventData.eventTitle) {
+    taskData.title = eventData.eventTitle
+  }
+
+  let date = eventData.startDate || eventData.endDate;
+  if (!date) {
+    return taskData
+  }
+
+  if (eventData.isAllDay) {
+    date = addHours(date, 10)
+  }
+
+  taskData.dueDate = dueDateFrom(date)
+  return taskData
+}
+
+export const dueDateFrom = (date) => date.toISOString()

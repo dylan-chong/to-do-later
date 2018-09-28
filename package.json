@@ -18,7 +18,8 @@
     "react-native": "0.57.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-modal-datetime-picker": "^6.0.0",
-    "react-navigation": "^2.14.2"
+    "react-navigation": "^2.14.2",
+    "sherlockjs": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",

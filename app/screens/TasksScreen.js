@@ -91,6 +91,7 @@ export class TasksScreen extends Component<Props> {
               entry.index === 0
                 ?
                 <ListItem itemDivider>
+                  <CheckBox style={{ opacity: 0 }}/>
                   <Body>
                     <Text>New Task...</Text>
                   </Body>
@@ -102,16 +103,10 @@ export class TasksScreen extends Component<Props> {
                 </ListItem>
                 :
                 <ListItem itemDivider>
-                  <Left>
-                    {
-                      entry.item.onCompletionChange
-                        &&
-                        <CheckBox
-                          checked={ entry.item.task.isCompleted }
-                          onPress={ () => entry.item.onCompletionChange(entry) }
-                        />
-                    }
-                  </Left>
+                  <CheckBox
+                    checked={ entry.item.task.isCompleted }
+                    onPress={ () => entry.item.onCompletionChange(entry) }
+                  />
                   <Body>
                     <Text>
                       {

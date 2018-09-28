@@ -64,43 +64,36 @@ export class TasksScreen extends Component<Props> {
     })
   }
 
-  editTask(entry) {
+  editTask(task) {
     const { navigate } = this.props.navigation;
 
-    const saveFunction = (task) => {
-      userTasks.update(tasks => tasks[entry.index] = task);
+    const saveFunction = (newTask) => {
+      userTasks.update(() => Object.assign(task, newTask));
     };
 
     const deleteFunction = () => {
-      userTasks.update(tasks => tasks.splice(entry.index, 1))
+      userTasks.update(tasks => tasks.splice(tasks.indexOf(task), 1))
     }
 
-    navigate('UnifiedEditTask', {
-      task: entry.item.task,
-      saveFunction,
-      deleteFunction,
-    })
+    navigate('UnifiedEditTask', { task, saveFunction, deleteFunction })
   }
 
   listItems() {
     return userTasks.all().map(task => ({
       task,
-      onPress: (entry) => this.editTask(entry),
-      onCompletionChange: (entry) => this.toggleChecked(entry),
+      onPress: (entry) => this.editTask(entry.item.task),
+      onCompletionChange: (entry) => this.toggleChecked(entry.item.task),
     }))
   }
 
-  toggleChecked({ index }) {
-    userTasks.update(tasks => {
-      const task = tasks[index]
-      task.isCompleted = !task.isCompleted;
-    })
+  toggleChecked(task) {
+    userTasks.update(() => task.isCompleted = !task.isCompleted)
 
     this.setState({})
   }
 
   taskText(task) {
-    let dueDateText = undefined;
+    let dueDateText = undefined
     let isOverdue = isTaskOverdue(task)
 
     if (task.dueDate) {
@@ -113,7 +106,9 @@ export class TasksScreen extends Component<Props> {
     return (
       <View>
         <Text>{ task.title }</Text>
-        <Text style={{ color: isOverdue ? 'red' : 'gray' }}>{ dueDateText }</Text>
+        <Text style={{ color: isOverdue ? 'red' : 'gray' }}>
+          { dueDateText }
+        </Text>
       </View>
     )
   }

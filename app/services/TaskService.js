@@ -1,4 +1,5 @@
 import { assign, sortBy } from 'lodash';
+import { isPast } from 'date-fns';
 
 import { userData } from './UserService';
 
@@ -27,4 +28,11 @@ export const newBlankTask = () => ({
 
 export const preprocessTasks = (tasks) => {
   return tasks.map(task => assign(newBlankTask(), task))
+}
+
+export const isTaskOverdue = ({ dueDate }) => {
+  if (!dueDate) {
+    return false
+  }
+  return isPast(dueDate)
 }

@@ -14,7 +14,11 @@ import { type NavigationState } from 'react-navigation';
 import { distanceInWordsToNow } from 'date-fns';
 import React, { Component } from 'react';
 
-import { newBlankTask, userTasks } from '../services/TaskService';
+import {
+  isTaskOverdue,
+  newBlankTask,
+  userTasks
+} from '../services/TaskService';
 
 type Props = { navigation: NavigationState };
 
@@ -95,6 +99,25 @@ export class TasksScreen extends Component<Props> {
     this.setState({})
   }
 
+  taskText(task) {
+    let dueDateText = undefined;
+    let isOverdue = isTaskOverdue(task)
+
+    if (task.dueDate) {
+      dueDateText =
+        ' (Due '
+        + distanceInWordsToNow(task.dueDate, { addSuffix: true })
+        + ')'
+    }
+
+    return (
+      <View>
+        <Text>{ task.title }</Text>
+        <Text style={{ color: isOverdue ? 'red' : 'gray' }}>{ dueDateText }</Text>
+      </View>
+    )
+  }
+
   showSettings() {
     const { navigate } = this.props.navigation;
     navigate('Settings')
@@ -120,23 +143,13 @@ export class TasksScreen extends Component<Props> {
           data={ this.listItems() }
           keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
-              <ListItem itemDivider>
+              <ListItem>
                 <CheckBox
                   checked={ entry.item.task.isCompleted }
                   onPress={ () => entry.item.onCompletionChange(entry) }
                 />
-                <Body>
-                  <Text>
-                    {
-                      entry.item.task.title + (
-                        entry.item.task.dueDate
-                        ? ' (Due '
-                          + distanceInWordsToNow(entry.item.task.dueDate, { addSuffix: true })
-                          + ')'
-                        : ''
-                      )
-                    }
-                  </Text>
+                <Body style={{ paddingLeft: 15 }}>
+                  { this.taskText(entry.item.task) }
                 </Body>
                 <Right>
                   <Button transparent onPress={ () => entry.item.onPress(entry) }>

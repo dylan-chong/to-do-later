@@ -4,7 +4,6 @@ import {
   CheckBox,
   Container,
   Icon,
-  Left,
   ListItem,
   Right,
   Text
@@ -19,12 +18,25 @@ import { newBlankTask, userTasks } from '../services/TaskService';
 type Props = { navigation: NavigationState };
 
 export class TasksScreen extends Component<Props> {
-  static navigationOptions = { title: 'Tasks' };
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Tasks',
+    headerRight: (
+      <Button transparent
+        style={{ paddingTop: 18 }}
+        onPress={ navigation.getParam('createTaskFunction') }>
+        <Icon active name="add" />
+      </Button>
+    ),
+  })
 
   willFocus = this.props.navigation.addListener(
     'willFocus',
     () => this.forceUpdate(),
   )
+
+  componentDidMount() {
+    this.props.navigation.setParams({ createTaskFunction: this.createTask.bind(this) });
+  }
 
   createTask() {
     const { navigate } = this.props.navigation;
@@ -41,14 +53,13 @@ export class TasksScreen extends Component<Props> {
 
   editTask(entry) {
     const { navigate } = this.props.navigation;
-    const taskIndex = entry.index - 1;
 
     const saveFunction = (task) => {
-      userTasks.update(tasks => tasks[taskIndex] = task);
+      userTasks.update(tasks => tasks[entry.index] = task);
     };
 
     const deleteFunction = () => {
-      userTasks.update(tasks => tasks.splice(taskIndex, 1))
+      userTasks.update(tasks => tasks.splice(entry.index, 1))
     }
 
     navigate('UnifiedEditTask', {
@@ -59,22 +70,16 @@ export class TasksScreen extends Component<Props> {
   }
 
   listItems() {
-    const items = [ { onPress: () => this.createTask() } ]
-
-    const tasks = userTasks.all().map(task => ({
+    return userTasks.all().map(task => ({
       task,
       onPress: (entry) => this.editTask(entry),
       onCompletionChange: (entry) => this.toggleChecked(entry),
     }))
-
-    return [ ...items, ...tasks ]
   }
 
   toggleChecked({ index }) {
-    const taskIndex = index - 1
-
     userTasks.update(tasks => {
-      const task = tasks[taskIndex]
+      const task = tasks[index]
       task.isCompleted = !task.isCompleted;
     })
 
@@ -88,43 +93,29 @@ export class TasksScreen extends Component<Props> {
           data={ this.listItems() }
           keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
-              entry.index === 0
-                ?
-                <ListItem itemDivider>
-                  <CheckBox style={{ opacity: 0 }}/>
-                  <Body>
-                    <Text>New Task...</Text>
-                  </Body>
-                  <Right>
-                    <Button transparent onPress={ () => entry.item.onPress(entry) }>
-                      <Icon active name="arrow-forward" />
-                    </Button>
-                  </Right>
-                </ListItem>
-                :
-                <ListItem itemDivider>
-                  <CheckBox
-                    checked={ entry.item.task.isCompleted }
-                    onPress={ () => entry.item.onCompletionChange(entry) }
-                  />
-                  <Body>
-                    <Text>
-                      {
-                        entry.item.task.title + (
-                          entry.item.task.dueDate
-                          ? '\nDue '
-                            + distanceInWordsToNow(entry.item.task.dueDate, { addSuffix: true })
-                          : ''
-                        )
-                      }
-                    </Text>
-                  </Body>
-                  <Right>
-                    <Button transparent onPress={ () => entry.item.onPress(entry) }>
-                      <Icon active name="arrow-forward" />
-                    </Button>
-                  </Right>
-                </ListItem>
+              <ListItem itemDivider>
+                <CheckBox
+                  checked={ entry.item.task.isCompleted }
+                  onPress={ () => entry.item.onCompletionChange(entry) }
+                />
+                <Body>
+                  <Text>
+                    {
+                      entry.item.task.title + (
+                        entry.item.task.dueDate
+                        ? '\nDue '
+                          + distanceInWordsToNow(entry.item.task.dueDate, { addSuffix: true })
+                        : ''
+                      )
+                    }
+                  </Text>
+                </Body>
+                <Right>
+                  <Button transparent onPress={ () => entry.item.onPress(entry) }>
+                    <Icon active name="arrow-forward" />
+                  </Button>
+                </Right>
+              </ListItem>
           }
         />
       </Container>

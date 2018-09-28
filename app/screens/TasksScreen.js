@@ -11,7 +11,7 @@ import {
 } from 'native-base';
 import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
-import { omit } from 'lodash';
+import { distanceInWordsToNow } from 'date-fns';
 import React, { Component } from 'react';
 
 import { newBlankTask, userTasks } from '../services/TaskService';
@@ -52,22 +52,17 @@ export class TasksScreen extends Component<Props> {
     }
 
     navigate('UnifiedEditTask', {
-      task: omit(entry.item, 'onPress'),
+      task: entry.item.task,
       saveFunction,
       deleteFunction,
     })
   }
 
   listItems() {
-    const items = [
-      {
-        title: 'New Task...',
-        onPress: () => this.createTask(),
-      }
-    ]
+    const items = [ { onPress: () => this.createTask() } ]
 
     const tasks = userTasks.all().map(task => ({
-      ...task,
+      task,
       onPress: (entry) => this.editTask(entry),
       onCompletionChange: (entry) => this.toggleChecked(entry),
     }))
@@ -93,28 +88,48 @@ export class TasksScreen extends Component<Props> {
           data={ this.listItems() }
           keyExtractor={ (item, index) => index.toString() }
           renderItem={ entry =>
-              <ListItem itemDivider>
-                <Left>
-                  {
-                    entry.item.onCompletionChange
-                    &&
-                    <CheckBox
-                      checked={ entry.item.isCompleted }
-                      onPress={ () => entry.item.onCompletionChange(entry) }
-                    />
-                  }
-                </Left>
-                <Body>
-                  <Text>
-                    { entry.item.title }
-                  </Text>
-                </Body>
-                <Right>
-                  <Button transparent onPress={ () => entry.item.onPress(entry) }>
-                    <Icon active name="arrow-forward" />
-                  </Button>
-                </Right>
-              </ListItem>
+              entry.index === 0
+                ?
+                <ListItem itemDivider>
+                  <Body>
+                    <Text>New Task...</Text>
+                  </Body>
+                  <Right>
+                    <Button transparent onPress={ () => entry.item.onPress(entry) }>
+                      <Icon active name="arrow-forward" />
+                    </Button>
+                  </Right>
+                </ListItem>
+                :
+                <ListItem itemDivider>
+                  <Left>
+                    {
+                      entry.item.onCompletionChange
+                        &&
+                        <CheckBox
+                          checked={ entry.item.task.isCompleted }
+                          onPress={ () => entry.item.onCompletionChange(entry) }
+                        />
+                    }
+                  </Left>
+                  <Body>
+                    <Text>
+                      {
+                        entry.item.task.title + (
+                          entry.item.task.dueDate
+                          ? '\nDue '
+                            + distanceInWordsToNow(entry.item.task.dueDate, { addSuffix: true })
+                          : ''
+                        )
+                      }
+                    </Text>
+                  </Body>
+                  <Right>
+                    <Button transparent onPress={ () => entry.item.onPress(entry) }>
+                      <Icon active name="arrow-forward" />
+                    </Button>
+                  </Right>
+                </ListItem>
           }
         />
       </Container>

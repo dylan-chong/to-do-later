@@ -41,6 +41,18 @@ export class SettingsScreen extends Component<Props> {
                 }) } />
             </Right>
           </ListItem>
+          <ListItem icon>
+            <Body>
+              <Text>Show incomplete tasks</Text>
+            </Body>
+            <Right>
+              <Switch
+                value={ this.state.showInCompletedTasks  }
+                onValueChange={ (value) => this.updateSetting({
+                  showInCompletedTasks: value,
+                }) } />
+            </Right>
+          </ListItem>
         </Content>
       </Container>
     );

@@ -19,6 +19,7 @@ import {
   newBlankTask,
   userTasks
 } from '../services/TaskService';
+import { userData } from '../services/UserService';
 
 type Props = { navigation: NavigationState };
 
@@ -79,11 +80,20 @@ export class TasksScreen extends Component<Props> {
   }
 
   listItems() {
-    return userTasks.all().map(task => ({
-      task,
-      onPress: (entry) => this.editTask(entry.item.task),
-      onCompletionChange: (entry) => this.toggleChecked(entry.item.task),
-    }))
+    const user = userData.currentUser()
+    const matchesFilters = task => {
+      if (!user.settings.showCompletedTasks && task.isCompleted) return false
+      return true
+    };
+
+    return userTasks
+      .all()
+      .filter(matchesFilters)
+      .map(task => ({
+        task,
+        onPress: (entry) => this.editTask(entry.item.task),
+        onCompletionChange: (entry) => this.toggleChecked(entry.item.task),
+      }))
   }
 
   toggleChecked(task) {

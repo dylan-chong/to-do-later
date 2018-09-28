@@ -30,9 +30,9 @@ export const preprocessTasks = (tasks) => {
   return tasks.map(task => assign(newBlankTask(), task))
 }
 
-export const isTaskOverdue = ({ dueDate }) => {
+export const isTaskOverdue = ({ dueDate, isCompleted }) => {
   if (!dueDate) {
     return false
   }
-  return isPast(dueDate)
+  return isPast(dueDate) && !isCompleted
 }

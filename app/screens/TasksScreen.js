@@ -87,6 +87,19 @@ export class TasksScreen extends Component<Props> {
   }
 
   render() {
+    if (this.listItems().length === 0) {
+      return (
+        <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ textAlign: 'center' }}>
+            {
+              'You have no tasks yet!\n\n'
+              + 'Go ahead and create one above!'
+            }
+          </Text>
+        </Container>
+      )
+    }
+
     return (
       <Container>
         <FlatList

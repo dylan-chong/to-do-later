@@ -43,7 +43,6 @@ export const partialTaskDataFromNaturalText = (text) => {
   const taskData = {}
 
   const eventData = Sherlock.parse(text)
-  console.log(eventData)
   if (eventData.eventTitle) {
     taskData.title = eventData.eventTitle
   }

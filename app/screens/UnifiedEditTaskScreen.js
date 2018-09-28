@@ -8,7 +8,8 @@ import {
   Item,
   Label,
   Separator,
-  Text
+  Text,
+  View
 } from 'native-base';
 import { type NavigationState } from 'react-navigation';
 import { distanceInWordsToNow, format } from 'date-fns';
@@ -23,13 +24,25 @@ import {
 type Props = { navigation: NavigationState };
 
 export class UnifiedEditTaskScreen extends Component<Props> {
-  static navigationOptions = { title: 'Task' };
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Task',
+    headerRight: (
+      <View style={{ flexDirection: 'row' }}>
+        <Button transparent
+          onPress={ navigation.getParam('localSaveFunction') }>
+          <Text>Save</Text>
+        </Button>
+      </View>
+    ),
+  })
+
 
   state = {};
 
   componentDidMount() {
-    const { getParam } = this.props.navigation;
+    const { getParam, setParams } = this.props.navigation;
     this.setState(getParam('task'))
+    setParams({ localSaveFunction: () => this.save() })
   }
 
   save() {
@@ -128,20 +141,18 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                 } />
             </Item>
 
-            <Separator/>
-
-            <Item style={ styles.container }>
-              {
-                getParam('deleteFunction')
+            {
+              getParam('deleteFunction')
                 &&
-                <Button onPress={ () => this.delete() } style={ styles.buttonContainer } danger>
-                  <Text>Delete</Text>
-                </Button>
-              }
-              <Button onPress={ () => this.save() } style={ styles.buttonContainer }>
-                <Text>Save</Text>
-              </Button>
-            </Item>
+                <View>
+                  <Separator/>
+                  <Item style={ styles.container }>
+                    <Button onPress={ () => this.delete() } style={ styles.buttonContainer } danger>
+                      <Text>Delete</Text>
+                    </Button>
+                  </Item>
+                </View>
+            }
 
           </Form>
         </Content>

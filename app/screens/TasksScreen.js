@@ -103,8 +103,9 @@ export class TasksScreen extends Component<Props> {
                     {
                       entry.item.task.title + (
                         entry.item.task.dueDate
-                        ? '\nDue '
+                        ? ' (Due '
                           + distanceInWordsToNow(entry.item.task.dueDate, { addSuffix: true })
+                          + ')'
                         : ''
                       )
                     }

@@ -15,7 +15,6 @@ export const newBlankSettings = () => ({
   showInCompletedTasks: true,
 })
 
-
 export const matchesFilters = task => {
   const user = userData.currentUser()
   if (!user.settings.showCompletedTasks && task.isCompleted) return false

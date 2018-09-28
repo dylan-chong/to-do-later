@@ -22,6 +22,7 @@ export const userTasks = {
 
 export const newBlankTask = () => ({
   title: '',
+  description: '',
   isCompleted: false,
   dueDate: null,
 })

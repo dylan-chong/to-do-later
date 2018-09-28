@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet, TextInput } from 'react-native';
 import {
   Button,
   Container,
@@ -92,6 +92,16 @@ export class UnifiedEditTaskScreen extends Component<Props> {
                   <Text uppercase={false}>Remove due date</Text>
                 </Button>
               }
+            </Item>
+            <Item stackedLabel>
+              <Label>Notes</Label>
+              <TextInput 
+                placeholder="This assignment is really important!" 
+                multiline={true}
+                value={ this.state.description } 
+                onChangeText={
+                  (value) => this.setState({ description: value })
+                } />
             </Item>
             <Item style={ styles.container }>
               {

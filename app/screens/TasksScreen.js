@@ -19,7 +19,7 @@ import {
   newBlankTask,
   userTasks
 } from '../services/TaskService';
-import { userData } from '../services/UserService';
+import { matchesFilters } from '../services/SettingsService';
 
 type Props = { navigation: NavigationState };
 
@@ -80,12 +80,6 @@ export class TasksScreen extends Component<Props> {
   }
 
   listItems() {
-    const user = userData.currentUser()
-    const matchesFilters = task => {
-      if (!user.settings.showCompletedTasks && task.isCompleted) return false
-      return true
-    };
-
     return userTasks
       .all()
       .filter(matchesFilters)
@@ -134,8 +128,13 @@ export class TasksScreen extends Component<Props> {
         <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ textAlign: 'center' }}>
             {
+              userTasks.all().length === 0
+              ?
               'You have no tasks yet!\n\n'
               + 'Go ahead and create one above!'
+              :
+              'All your tasks are hidden by filters.\n\n'
+              + 'You can control these in the settings above.'
             }
           </Text>
         </Container>

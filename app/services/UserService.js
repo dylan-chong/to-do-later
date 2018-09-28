@@ -2,6 +2,7 @@ import { assign, cloneDeep } from 'lodash';
 import firebase from 'firebase';
 import md5 from 'md5';
 
+import { newBlankSettings } from './SettingsService';
 import { preprocessTasks } from './TaskService';
 
 export const userData = {
@@ -84,8 +85,6 @@ const hashPassword = (passwordString) => {
 const newBlankUser = () => {
   return {
     tasks: [],
-    settings: {
-      showCompletedTasks: false,
-    }
+    settings: newBlankSettings(),
   }
 }

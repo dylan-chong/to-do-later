@@ -36,7 +36,6 @@ export class UnifiedEditTaskScreen extends Component<Props> {
     ),
   })
 
-
   state = {};
 
   componentDidMount() {
@@ -93,14 +92,18 @@ export class UnifiedEditTaskScreen extends Component<Props> {
         <Content>
           <Form>
 
-            <Item stackedLabel>
-              <Label>Smart Entry</Label>
-              <Input placeholder="History Assignment due Tuesday 3pm" onChangeText={
-                (value) => this.onSmartEntryChanged(value)
-              } />
-            </Item>
+            {
+              getParam('hasSmartEntry')
+                &&
+                <Item stackedLabel>
+                  <Label>Smart Entry</Label>
+                  <Input placeholder="History Assignment due Tuesday 3pm" onChangeText={
+                    (value) => this.onSmartEntryChanged(value)
+                  } />
+                </Item>
+            }
 
-            <Separator/>
+            { getParam('hasSmartEntry') && <Separator/> }
 
             <Item stackedLabel>
               <Label>Title</Label>
@@ -114,7 +117,7 @@ export class UnifiedEditTaskScreen extends Component<Props> {
               <Button transparent onPress={ () => this.setState({ isSelectingDate: true }) }>
                 <Text uppercase={false}>{
                   dueDate
-                    ? format(dueDate, 'ddd d MMM YYYY, hh:mm a')
+                    ? format(dueDate, 'ddd D MMM YYYY, hh:mm a')
                       + ' (' + distanceInWordsToNow(dueDate, { addSuffix: true }) + ')'
                     : 'None'
                 }</Text>

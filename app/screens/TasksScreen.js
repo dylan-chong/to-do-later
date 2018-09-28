@@ -62,6 +62,7 @@ export class TasksScreen extends Component<Props> {
     navigate('UnifiedEditTask', {
       task: newBlankTask(),
       saveFunction,
+      hasSmartEntry: true,
     })
   }
 

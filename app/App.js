@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation';
 
 import { LoginScreen } from './screens/LoginScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
 import { TasksScreen } from './screens/TasksScreen';
 import { UnifiedEditTaskScreen } from './screens/UnifiedEditTaskScreen';
 import { WelcomeScreen } from './screens/WelcomeScreen';
@@ -14,6 +15,7 @@ export default createStackNavigator(
     Login: LoginScreen,
     Tasks: TasksScreen,
     UnifiedEditTask: UnifiedEditTaskScreen,
+    Settings: SettingsScreen,
   },
   { initialRouteName: 'Welcome' },
 );

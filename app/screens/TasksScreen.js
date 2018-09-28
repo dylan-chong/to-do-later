@@ -6,7 +6,8 @@ import {
   Icon,
   ListItem,
   Right,
-  Text
+  Text,
+  View
 } from 'native-base';
 import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
@@ -21,11 +22,16 @@ export class TasksScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
     title: 'Tasks',
     headerRight: (
-      <Button transparent
-        style={{ paddingTop: 18 }}
-        onPress={ navigation.getParam('createTaskFunction') }>
-        <Icon active name="add" />
-      </Button>
+      <View style={{ flexDirection: 'row' }}>
+        <Button transparent
+          onPress={ navigation.getParam('showSettingsFunction') }>
+          <Icon active name="settings" />
+        </Button>
+        <Button transparent
+          onPress={ navigation.getParam('createTaskFunction') }>
+          <Icon active name="add" />
+        </Button>
+      </View>
     ),
   })
 
@@ -35,7 +41,10 @@ export class TasksScreen extends Component<Props> {
   )
 
   componentDidMount() {
-    this.props.navigation.setParams({ createTaskFunction: this.createTask.bind(this) });
+    this.props.navigation.setParams({
+      createTaskFunction: this.createTask.bind(this),
+      showSettingsFunction: this.showSettings.bind(this),
+    });
   }
 
   createTask() {
@@ -84,6 +93,11 @@ export class TasksScreen extends Component<Props> {
     })
 
     this.setState({})
+  }
+
+  showSettings() {
+    const { navigate } = this.props.navigation;
+    navigate('Settings')
   }
 
   render() {

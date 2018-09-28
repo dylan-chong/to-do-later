@@ -10,15 +10,20 @@ import {
 import { type NavigationState } from 'react-navigation';
 import React, { Component } from 'react';
 
+import { userData } from '../services/UserService';
+import { clone } from 'lodash';
+
 type Props = { navigation: NavigationState };
 
 export class SettingsScreen extends Component<Props> {
   static navigationOptions = { title: 'Settings' };
 
-  state = {
-    username: '',
-    password: '',
-  };
+  state = clone(userData.currentUser().settings)
+
+  updateSetting(newSettings) {
+    this.setState(newSettings)
+    userData.update(({ settings }) => Object.assign(settings, newSettings))
+  }
 
   render() {
     return (
@@ -29,7 +34,11 @@ export class SettingsScreen extends Component<Props> {
               <Text>Show completed tasks</Text>
             </Body>
             <Right>
-              <Switch value={false} />
+              <Switch
+                value={ this.state.showCompletedTasks  }
+                onValueChange={ (value) => this.updateSetting({
+                  showCompletedTasks: value,
+                }) } />
             </Right>
           </ListItem>
         </Content>

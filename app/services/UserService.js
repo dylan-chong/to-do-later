@@ -84,5 +84,8 @@ const hashPassword = (passwordString) => {
 const newBlankUser = () => {
   return {
     tasks: [],
+    settings: {
+      showCompletedTasks: false,
+    }
   }
 }

@@ -13,6 +13,7 @@ import { FlatList } from 'react-native';
 import { type NavigationState } from 'react-navigation';
 import { distanceInWordsToNow } from 'date-fns';
 import React, { Component } from 'react';
+import Toast from 'react-native-easy-toast'
 
 import {
   isTaskOverdue,
@@ -92,9 +93,16 @@ export class TasksScreen extends Component<Props> {
   }
 
   toggleChecked(task) {
-    userTasks.update(() => task.isCompleted = !task.isCompleted)
+    userTasks.update(() => {
+      task.isCompleted = !task.isCompleted
 
-    this.setState({})
+      this.refs.toast.show(
+        `Task ${task.isCompleted ? 'completed' : 'incomplete'}!`,
+        2000
+      )
+
+      this.setState({})
+    })
   }
 
   taskText(task) {
@@ -144,6 +152,7 @@ export class TasksScreen extends Component<Props> {
 
     return (
       <Container>
+      <Toast ref="toast"/>
         <FlatList
           data={ this.listItems() }
           keyExtractor={ (item, index) => index.toString() }
